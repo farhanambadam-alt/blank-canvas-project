@@ -77,7 +77,6 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
     const btn = buttonRefs.current.get(key);
     if (btn) {
       btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      // Recalculate pill position after scroll
       setTimeout(updateTabPosition, 350);
     }
   }, [selectedArtist, updateTabPosition]);
@@ -111,14 +110,15 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                 left: tabStyle.left - 12,
                 width: tabStyle.width + 24,
                 top: -8,
-                height: 160,
+                height: 180,
                 background: CONTAINER_BG,
                 borderRadius: '45px 45px 0 0',
                 borderLeft: `1px solid ${PILL_BORDER}`,
                 borderRight: `1px solid ${PILL_BORDER}`,
                 borderTop: `1px solid ${PILL_BORDER}`,
+                borderBottom: 'none',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
-                transition: 'left 0.7s cubic-bezier(0.2, 1, 0.3, 1), width 0.5s cubic-bezier(0.2, 1, 0.3, 1)',
+                transition: 'left 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 animation: isJiggling ? 'jelly 0.55s ease' : 'none',
                 transformOrigin: 'bottom center',
                 zIndex: 10,
@@ -134,13 +134,13 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
             <button
               ref={setButtonRef('_all')}
               onClick={() => onSelectArtist(null)}
-              className="flex flex-col items-center gap-2 flex-shrink-0 min-w-[72px]"
+              className="flex flex-col items-center gap-2 flex-shrink-0 min-w-[64px] sm:min-w-[72px]"
             >
               <div
                 className={`rounded-full flex items-center justify-center text-[11px] font-sans font-bold text-truffle border-2 transition-all duration-300 ease-out ${
                   !selectedArtist
-                    ? 'w-16 h-16 border-bronze/40 shadow-md'
-                    : 'w-12 h-12 border-transparent opacity-50'
+                    ? 'w-14 h-14 sm:w-16 sm:h-16 border-bronze/40 shadow-md'
+                    : 'w-11 h-11 sm:w-12 sm:h-12 border-transparent opacity-50'
                 }`}
                 style={{
                   background: CONTAINER_BG,
@@ -150,7 +150,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                 ALL
               </div>
               <span
-                className={`text-[9px] font-sans uppercase tracking-widest transition-all duration-200 ${
+                className={`text-[8px] sm:text-[9px] font-sans uppercase tracking-widest transition-all duration-200 max-w-[60px] sm:max-w-[72px] text-center truncate ${
                   !selectedArtist ? 'font-bold text-truffle' : 'font-medium'
                 }`}
                 style={selectedArtist ? { color: MUTED_TAUPE } : undefined}
@@ -166,23 +166,24 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                   key={artist.id}
                   ref={setButtonRef(artist.id)}
                   onClick={() => onSelectArtist(isSelected ? null : artist.id)}
-                  className="flex flex-col items-center gap-2 flex-shrink-0 min-w-[72px]"
+                  className="flex flex-col items-center gap-2 flex-shrink-0 min-w-[64px] sm:min-w-[72px]"
                 >
                   <div
                     className={`rounded-full overflow-hidden border-2 transition-all duration-300 ease-out ${
                       isSelected
-                        ? 'w-16 h-16 border-bronze/40 shadow-md'
-                        : 'w-12 h-12 border-transparent opacity-50'
+                        ? 'w-14 h-14 sm:w-16 sm:h-16 border-bronze/40 shadow-md'
+                        : 'w-11 h-11 sm:w-12 sm:h-12 border-transparent opacity-50'
                     }`}
                     style={isSelected && isJiggling ? { animation: 'jelly 0.55s ease', transformOrigin: 'bottom center' } : undefined}
                   >
                     <img src={artist.avatar} alt={artist.name} className="w-full h-full object-cover" />
                   </div>
                   <span
-                    className={`text-[9px] font-sans uppercase tracking-widest whitespace-nowrap transition-all duration-200 ${
+                    className={`text-[8px] sm:text-[9px] font-sans uppercase tracking-widest transition-all duration-200 max-w-[60px] sm:max-w-[72px] text-center leading-tight ${
                       isSelected ? 'font-bold text-truffle' : 'font-medium'
                     }`}
                     style={!isSelected ? { color: MUTED_TAUPE } : undefined}
+                    title={artist.name}
                   >
                     {artist.name}
                   </span>
@@ -198,7 +199,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
         ref={containerRef}
         className="mx-3 relative"
         style={{
-          marginTop: -24,
+          marginTop: -32,
           zIndex: 20,
           background: CONTAINER_BG,
           borderRadius: '1.25rem',
@@ -226,7 +227,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
             className="flex items-center gap-1.5 rounded-full px-3 py-1.5"
             style={{ background: '#FFFFFF', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
           >
-            <Star size={13} className="text-bronze fill-bronze" />
+            <Star size={13} style={{ color: MUTED_BRONZE, fill: MUTED_BRONZE }} />
             <span className="text-sm font-sans font-bold text-truffle">{avgRating}</span>
           </div>
         </div>
@@ -263,8 +264,11 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                         <Star
                           key={i}
                           size={11}
-                          className={i < review.rating ? 'text-bronze fill-bronze' : ''}
-                          style={i >= review.rating ? { color: EMPTY_STAR, fill: EMPTY_STAR } : undefined}
+                          style={
+                            i < review.rating
+                              ? { color: MUTED_BRONZE, fill: MUTED_BRONZE }
+                              : { color: EMPTY_STAR, fill: EMPTY_STAR }
+                          }
                         />
                       ))}
                     </div>
