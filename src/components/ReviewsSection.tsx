@@ -9,7 +9,8 @@ interface ReviewsSectionProps {
   onSelectArtist: (id: string | null) => void;
 }
 
-const PILL_BG = '#F8F1E9';
+const PAGE_BG = '#F2ECE7';
+const CONTAINER_BG = '#F8F1E9';
 const PILL_BORDER = '#E8DED6';
 const MUTED_TAUPE = '#9C918C';
 const MUTED_BRONZE = '#9A7B6D';
@@ -70,13 +71,24 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
     return () => clearTimeout(timer);
   }, [selectedArtist]);
 
+  // Scroll selected artist into view
+  useEffect(() => {
+    const key = selectedArtist ?? '_all';
+    const btn = buttonRefs.current.get(key);
+    if (btn) {
+      btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      // Recalculate pill position after scroll
+      setTimeout(updateTabPosition, 350);
+    }
+  }, [selectedArtist, updateTabPosition]);
+
   const setButtonRef = (key: string) => (el: HTMLButtonElement | null) => {
     if (el) buttonRefs.current.set(key, el);
     else buttonRefs.current.delete(key);
   };
 
   return (
-    <div className="animate-fade-in-up" style={{ animationDuration: '300ms' }}>
+    <div className="animate-fade-in-up" style={{ animationDuration: '300ms', background: PAGE_BG }}>
       {/* Our Stylists Header */}
       <div className="px-5 pt-5 pb-1">
         <div className="flex items-baseline justify-between mb-5">
@@ -91,7 +103,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
 
         {/* Artist Selector */}
         <div className="relative" ref={artistRowRef}>
-          {/* Jelly Pill — z-index 1, behind avatars (z-2), below container (z-3) */}
+          {/* Jelly Pill — z-10, behind avatars (z-20) */}
           {tabStyle && (
             <div
               className="absolute pointer-events-none"
@@ -99,25 +111,25 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                 left: tabStyle.left - 12,
                 width: tabStyle.width + 24,
                 top: -8,
-                bottom: -28,
-                background: PILL_BG,
-                borderRadius: '40px 40px 0 0',
+                height: 160,
+                background: CONTAINER_BG,
+                borderRadius: '45px 45px 0 0',
                 borderLeft: `1px solid ${PILL_BORDER}`,
                 borderRight: `1px solid ${PILL_BORDER}`,
                 borderTop: `1px solid ${PILL_BORDER}`,
-                boxShadow: `0 4px 12px rgba(0,0,0,0.04)`,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
                 transition: 'left 0.7s cubic-bezier(0.2, 1, 0.3, 1), width 0.5s cubic-bezier(0.2, 1, 0.3, 1)',
                 animation: isJiggling ? 'jelly 0.55s ease' : 'none',
                 transformOrigin: 'bottom center',
-                zIndex: 1,
+                zIndex: 10,
               }}
             />
           )}
 
-          {/* Artists Row — z-index 2, above pill */}
+          {/* Artists Row — scrollable, z-20, above pill */}
           <div
-            className="flex overflow-x-auto scrollbar-hide pb-4 items-end justify-evenly relative"
-            style={{ zIndex: 2 }}
+            className="flex overflow-x-auto scrollbar-hide pb-4 items-end gap-1 relative"
+            style={{ zIndex: 20 }}
           >
             <button
               ref={setButtonRef('_all')}
@@ -131,7 +143,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                     : 'w-12 h-12 border-transparent opacity-50'
                 }`}
                 style={{
-                  background: PILL_BG,
+                  background: CONTAINER_BG,
                   ...((!selectedArtist && isJiggling) ? { animation: 'jelly 0.55s ease', transformOrigin: 'bottom center' } : {}),
                 }}
               >
@@ -181,14 +193,14 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
         </div>
       </div>
 
-      {/* Reviews Container — z-index 3, negative margin overlaps pill seamlessly */}
+      {/* Reviews Container — z-20, negative margin overlaps pill seamlessly */}
       <div
         ref={containerRef}
         className="mx-3 relative"
         style={{
-          marginTop: -20,
-          zIndex: 3,
-          background: PILL_BG,
+          marginTop: -24,
+          zIndex: 20,
+          background: CONTAINER_BG,
           borderRadius: '1.25rem',
           padding: '2px',
           animation: isJiggling ? 'jelly-container 0.5s ease' : 'none',
@@ -200,13 +212,13 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
           <h3 className="font-serif text-[19px]">
             {currentArtist ? (
               <>
-                <span className="text-truffle font-normal">{currentArtist.name}</span>{' '}
-                <span className="italic" style={{ color: MUTED_BRONZE }}>Reviews</span>
+                <span className="font-bold" style={{ color: '#2C1E1A' }}>{currentArtist.name}</span>{' '}
+                <span className="italic font-serif" style={{ color: MUTED_BRONZE }}>Reviews</span>
               </>
             ) : (
               <>
-                <span className="text-truffle font-normal">All</span>{' '}
-                <span className="italic" style={{ color: MUTED_BRONZE }}>Reviews</span>
+                <span className="font-bold" style={{ color: '#2C1E1A' }}>All</span>{' '}
+                <span className="italic font-serif" style={{ color: MUTED_BRONZE }}>Reviews</span>
               </>
             )}
           </h3>
@@ -235,7 +247,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                    style={{ background: PILL_BG, border: `1px solid ${PILL_BORDER}` }}
+                    style={{ background: CONTAINER_BG, border: `1px solid ${PILL_BORDER}` }}
                   >
                     <span className="font-serif text-base font-semibold text-truffle">
                       {review.userName.charAt(0)}
@@ -269,7 +281,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
               <div className="mb-3">
                 <span
                   className="inline-block text-[9px] font-sans font-bold text-truffle uppercase tracking-widest px-3.5 py-1 rounded-full"
-                  style={{ background: PILL_BG, border: `1px solid ${PILL_BORDER}` }}
+                  style={{ background: CONTAINER_BG, border: `1px solid ${PILL_BORDER}` }}
                 >
                   {review.service}
                 </span>
