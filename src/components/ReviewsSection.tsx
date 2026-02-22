@@ -134,7 +134,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
             <button
               ref={setButtonRef('_all')}
               onClick={() => onSelectArtist(null)}
-              className="flex flex-col items-center gap-2 flex-shrink-0 min-w-[64px] sm:min-w-[72px]"
+            className="flex flex-col items-center flex-shrink-0 min-w-[56px] sm:min-w-[64px]"
             >
               <div
                 className={`rounded-full flex items-center justify-center text-[11px] font-sans font-bold text-truffle border-2 transition-all duration-300 ease-out ${
@@ -149,14 +149,6 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
               >
                 ALL
               </div>
-              <span
-                className={`text-[8px] sm:text-[9px] font-sans uppercase tracking-widest transition-all duration-200 max-w-[60px] sm:max-w-[72px] text-center truncate ${
-                  !selectedArtist ? 'font-bold text-truffle' : 'font-medium'
-                }`}
-                style={selectedArtist ? { color: MUTED_TAUPE } : undefined}
-              >
-                All Artists
-              </span>
             </button>
 
             {artists.map((artist) => {
@@ -166,7 +158,7 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                   key={artist.id}
                   ref={setButtonRef(artist.id)}
                   onClick={() => onSelectArtist(isSelected ? null : artist.id)}
-                  className="flex flex-col items-center gap-2 flex-shrink-0 min-w-[64px] sm:min-w-[72px]"
+                  className="flex flex-col items-center flex-shrink-0 min-w-[56px] sm:min-w-[64px]"
                 >
                   <div
                     className={`rounded-full overflow-hidden border-2 transition-all duration-300 ease-out ${
@@ -178,15 +170,6 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
                   >
                     <img src={artist.avatar} alt={artist.name} className="w-full h-full object-cover" />
                   </div>
-                  <span
-                    className={`text-[8px] sm:text-[9px] font-sans uppercase tracking-widest transition-all duration-200 max-w-[60px] sm:max-w-[72px] text-center leading-tight ${
-                      isSelected ? 'font-bold text-truffle' : 'font-medium'
-                    }`}
-                    style={!isSelected ? { color: MUTED_TAUPE } : undefined}
-                    title={artist.name}
-                  >
-                    {artist.name}
-                  </span>
                 </button>
               );
             })}
@@ -208,27 +191,57 @@ const ReviewsSection = ({ artists, reviews, selectedArtist, onSelectArtist }: Re
           transformOrigin: 'top center',
         }}
       >
-        {/* Reviews Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-3">
-          <h3 className="font-serif text-[19px]">
-            {currentArtist ? (
-              <>
-                <span className="font-bold" style={{ color: '#2C1E1A' }}>{currentArtist.name}</span>{' '}
+        {/* Artist Info Bar + Reviews Header */}
+        <div className="px-5 pt-5 pb-3">
+          {currentArtist ? (
+            <div className="flex items-center gap-3 mb-3">
+              <div
+                className="w-12 h-12 rounded-2xl overflow-hidden flex-shrink-0 border"
+                style={{ borderColor: PILL_BORDER }}
+              >
+                <img src={currentArtist.avatar} alt={currentArtist.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="font-sans font-bold text-[15px] block truncate" style={{ color: '#2C1E1A' }}>
+                  {currentArtist.name}
+                </span>
+                <div className="flex items-center gap-1 mt-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      size={11}
+                      style={
+                        i < Math.round(Number(avgRating))
+                          ? { color: MUTED_BRONZE, fill: MUTED_BRONZE }
+                          : { color: EMPTY_STAR, fill: EMPTY_STAR }
+                      }
+                    />
+                  ))}
+                  <span className="text-[11px] font-sans font-semibold ml-1" style={{ color: MUTED_BRONZE }}>
+                    {avgRating}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : null}
+          <div className="flex items-center justify-between">
+            <h3 className="font-serif text-[19px]">
+              {currentArtist ? (
                 <span className="italic font-serif" style={{ color: MUTED_BRONZE }}>Reviews</span>
-              </>
-            ) : (
-              <>
-                <span className="font-bold" style={{ color: '#2C1E1A' }}>All</span>{' '}
-                <span className="italic font-serif" style={{ color: MUTED_BRONZE }}>Reviews</span>
-              </>
-            )}
-          </h3>
-          <div
-            className="flex items-center gap-1.5 rounded-full px-3 py-1.5"
-            style={{ background: '#FFFFFF', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
-          >
-            <Star size={13} style={{ color: MUTED_BRONZE, fill: MUTED_BRONZE }} />
-            <span className="text-sm font-sans font-bold text-truffle">{avgRating}</span>
+              ) : (
+                <>
+                  <span className="font-bold" style={{ color: '#2C1E1A' }}>All</span>{' '}
+                  <span className="italic font-serif" style={{ color: MUTED_BRONZE }}>Reviews</span>
+                </>
+              )}
+            </h3>
+            <div
+              className="flex items-center gap-1.5 rounded-full px-3 py-1.5"
+              style={{ background: '#FFFFFF', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
+            >
+              <Star size={13} style={{ color: MUTED_BRONZE, fill: MUTED_BRONZE }} />
+              <span className="text-sm font-sans font-bold text-truffle">{avgRating}</span>
+            </div>
           </div>
         </div>
 
