@@ -119,6 +119,10 @@ export const artists: Artist[] = [
   { id: '2', name: 'Rahul K.', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', specialty: 'Colorist' },
   { id: '3', name: 'Anita M.', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop', specialty: 'Makeup Artist' },
   { id: '4', name: 'Vikram R.', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop', specialty: 'Barber' },
+  { id: '5', name: 'Deepa L.', avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop', specialty: 'Skin Care' },
+  { id: '6', name: 'Karan T.', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', specialty: 'Hair Stylist' },
+  { id: '7', name: 'Neha G.', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop', specialty: 'Nail Artist' },
+  { id: '8', name: 'Arjun P.', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop', specialty: 'Colorist' },
 ];
 
 export const reviews: Review[] = [
@@ -127,6 +131,11 @@ export const reviews: Review[] = [
   { id: '3', userName: 'Meera K.', userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&h=60&fit=crop', rating: 5, text: 'Anita is the best makeup artist! My bridal look was absolutely stunning. Highly recommended!', service: 'Bridal Makeup', date: '3 days ago', artistId: '3', helpful: 24 },
   { id: '4', userName: 'Rohan S.', userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop', rating: 4, text: 'Good color work by Rahul. Very professional and knowledgeable about trends.', service: 'Hair Color', date: '5 days ago', artistId: '2', helpful: 6 },
   { id: '5', userName: 'Kavya R.', userAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=60&h=60&fit=crop', rating: 5, text: 'Wonderful service! Will definitely come back again.', service: 'Facial', date: '1 day ago', helpful: 3 },
+  { id: '6', userName: 'Pooja M.', userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&h=60&fit=crop', rating: 5, text: 'Deepa is fantastic with facials. My skin has never looked better!', service: 'Skin Care', date: '4 days ago', artistId: '5', helpful: 15 },
+  { id: '7', userName: 'Suresh N.', userAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=60&h=60&fit=crop', rating: 4, text: 'Karan gave me a great haircut. Very attentive to what I wanted.', service: 'Haircut & Styling', date: '6 days ago', artistId: '6', helpful: 9, hasPhoto: true },
+  { id: '8', userName: 'Divya S.', userAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&h=60&fit=crop', rating: 5, text: 'Neha did the most beautiful nail art! Absolutely loved it.', service: 'Manicure & Pedicure', date: '2 days ago', artistId: '7', helpful: 18 },
+  { id: '9', userName: 'Rakesh V.', userAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&h=60&fit=crop', rating: 4, text: 'Arjun knows his colors well. Perfect highlights every time.', service: 'Hair Color', date: '1 week ago', artistId: '8', helpful: 7 },
+  { id: '10', userName: 'Sanya T.', userAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=60&h=60&fit=crop', rating: 5, text: 'Best salon experience ever. Priya is a magician with hair!', service: 'Hair Spa', date: '3 days ago', artistId: '1', helpful: 22 },
 ];
 
 export const bookings: Booking[] = [
